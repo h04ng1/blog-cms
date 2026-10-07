@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blog CMS</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="brand">Blog CMS</a>
+      <nav class="nav-links" id="nav-auth-slot"></nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <h1>Latest posts</h1>
+      <p class="muted">A small blog platform built with FastAPI + vanilla JS.</p>
+
+      <div class="filters">
+        <input type="text" id="search-input" placeholder="Search posts..." />
+        <select id="category-select">
+          <option value="">All categories</option>
+        </select>
+        <select id="tag-select">
+          <option value="">All tags</option>
+        </select>
+      </div>
+
+      <div id="posts-list"></div>
+      <div class="pagination" id="pagination"></div>
+    </div>
+  </main>
+
+  <footer>Built for learning backend development — FastAPI + SQLAlchemy + JWT.</footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

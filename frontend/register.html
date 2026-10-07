@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign up - Blog CMS</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="brand">Blog CMS</a>
+      <nav class="nav-links" id="nav-auth-slot"></nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="card auth-form">
+        <h1>Create an account</h1>
+        <div id="error-slot"></div>
+        <form id="register-form">
+          <div class="form-group">
+            <label for="full_name">Full name</label>
+            <input type="text" id="full_name" required />
+          </div>
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" required />
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" required />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" minlength="6" required />
+          </div>
+          <button class="btn" type="submit" style="width:100%">Sign up</button>
+        </form>
+        <p class="muted" style="margin-top:14px">
+          Already have an account? <a href="login.html">Login</a>
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    document.getElementById("register-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const errorSlot = document.getElementById("error-slot");
+      errorSlot.innerHTML = "";
+      const payload = {
+        full_name: document.getElementById("full_name").value,
+        username: document.getElementById("username").value,
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value,
+      };
+      try {
+        await apiRequest("/auth/register", { method: "POST", body: payload });
+        const body = new URLSearchParams();
+        body.set("username", payload.email);
+        body.set("password", payload.password);
+        const token = await apiRequest("/auth/login", { method: "POST", body, isForm: true });
+        setToken(token.access_token);
+        window.location.href = "index.html";
+      } catch (err) {
+        errorSlot.innerHTML = `<div class="error-box">${err.message}</div>`;
+      }
+    });
+  </script>
+</body>
+</html>

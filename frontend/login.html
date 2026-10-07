@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - Blog CMS</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="brand">Blog CMS</a>
+      <nav class="nav-links" id="nav-auth-slot"></nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="card auth-form">
+        <h1>Login</h1>
+        <div id="error-slot"></div>
+        <form id="login-form">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" required />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" required />
+          </div>
+          <button class="btn" type="submit" style="width:100%">Login</button>
+        </form>
+        <p class="muted" style="margin-top:14px">
+          No account yet? <a href="register.html">Sign up</a>
+        </p>
+        <p class="muted">Demo admin: admin@example.com / admin123</p>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    document.getElementById("login-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const errorSlot = document.getElementById("error-slot");
+      errorSlot.innerHTML = "";
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      try {
+        const body = new URLSearchParams();
+        body.set("username", email);
+        body.set("password", password);
+        const token = await apiRequest("/auth/login", {
+          method: "POST",
+          body,
+          isForm: true,
+        });
+        setToken(token.access_token);
+        window.location.href = "index.html";
+      } catch (err) {
+        errorSlot.innerHTML = `<div class="error-box">${err.message}</div>`;
+      }
+    });
+  </script>
+</body>
+</html>
